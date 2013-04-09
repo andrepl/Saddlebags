@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,7 +54,20 @@ public class Saddlebags extends JavaPlugin implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled=true, priority=EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.MONITOR)
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (event.getEntity() instanceof Pig) {
+            Pig pig = (Pig) event.getEntity();
+            if (entitySaddlebagMap.containsKey(pig.getUniqueId())) {
+                Saddlebag bag = entitySaddlebagMap.remove(pig.getUniqueId());
+                bag.spillContents(pig.getLocation());
+                bag.delete();
+            }
+            
+        }
+    }
+
+    @EventHandler(ignoreCancelled=true, priority=EventPriority.NORMAL)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.getRightClicked() instanceof Pig) {
             Pig pig = (Pig) event.getRightClicked();

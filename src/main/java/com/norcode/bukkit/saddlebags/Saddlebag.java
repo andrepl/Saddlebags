@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -150,5 +151,17 @@ public class Saddlebag implements InventoryHolder {
 
     public void onClosed(List<HumanEntity> viewers) {
         this.saveInventory();
+    }
+
+    public void spillContents(Location location) {
+        for (ItemStack stack: getInventory().getContents()) {
+            if (stack != null) {
+                location.getWorld().dropItem(location, stack);
+            }
+        }
+    }
+    
+    public void delete() {
+        plugin.getDatabase().delete(this.data);
     }
 }
