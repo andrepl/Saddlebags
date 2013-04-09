@@ -1,0 +1,30 @@
+main: com.norcode.bukkit.saddlebags.Saddlebags
+author: metalhedd
+name: Saddlebags
+database: true
+version: 0.0.1
+
+
+permissions:
+  saddlebags.open-own:
+    default: true
+  saddlebags.open-any:
+    default: op
+  saddlebags.capacity.81: 
+    default: false
+  saddlebags.capacity.72:
+    default: false
+  saddlebags.capacity.63:
+    default: false
+  saddlebags.capacity.54:
+    default: false
+  saddlebags.capacity.45:
+    default: false
+  saddlebags.capacity.36:
+    default: false
+  saddlebags.capacity.27:
+    default: false
+  saddlebags.capacity.18:
+    default: false
+  saddlebags.capacity.9:
+    default: false

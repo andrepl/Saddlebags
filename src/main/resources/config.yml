@@ -1,0 +1,20 @@
+###########################
+# DEFAULT CONFIGURATION   
+#--------------------------
+# # Must be multiples of 9
+# default-size: 27 
+#
+# # The item which will open the inventory when right clicked on the pig.
+# key-item: GOLDEN_CARROT
+#
+# # if true, only the player who saddled the pig may open the inventory
+# owner-only: false
+#
+# # if true, the inventory may only be opened while riding the pig.
+# riding-only: false
+
+default-size: 27
+key-item: GOLDEN_CARROT
+owner-only: false
+riding-only: false
+
