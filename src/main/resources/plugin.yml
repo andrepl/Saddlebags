@@ -3,6 +3,7 @@ author: metalhedd
 name: Saddlebags
 database: true
 version: 0.0.2
+softdepend: [Vault]
 
 
 permissions:
