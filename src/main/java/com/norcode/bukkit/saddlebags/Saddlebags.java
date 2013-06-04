@@ -126,6 +126,14 @@ public class Saddlebags extends JavaPlugin implements Listener {
                 }
                 
             } else if (!pig.hasSaddle() && Material.SADDLE.equals(inHand)) {
+                if (hasEconomy()) {
+                    double cost = getConfig().getDouble("cost-to-saddle", 0);
+                    if (cost > 0 && !getEconomy().withdrawPlayer(player.getName(), cost).transactionSuccess()) {
+                        player.sendMessage("Sorry, you can't afford to saddle that pig, it costs " + getEconomy().format(cost));
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
                 bag = new Saddlebag(this, (Entity) pig, player);
                 entitySaddlebagMap.put(pig.getUniqueId(), bag);
             }

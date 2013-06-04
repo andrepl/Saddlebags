@@ -15,10 +15,14 @@
 #
 # # The economy cost to open saddlebags
 # cost-to-open: 0
+#
+# # The economy cost to saddle a pig
+# cost-to-saddle: 0
+
 
 default-size: 27
 key-item: GOLDEN_CARROT
 owner-only: false
 riding-only: false
 cost-to-open: 0
-
+cost-to-saddle: 0
