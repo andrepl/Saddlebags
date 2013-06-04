@@ -2,13 +2,15 @@ main: com.norcode.bukkit.saddlebags.Saddlebags
 author: metalhedd
 name: Saddlebags
 database: true
-version: 0.0.1
+version: 0.0.2
 
 
 permissions:
   saddlebags.open-own:
     default: true
   saddlebags.open-any:
+    default: op
+  saddlebags.free:
     default: op
   saddlebags.capacity.81: 
     default: false

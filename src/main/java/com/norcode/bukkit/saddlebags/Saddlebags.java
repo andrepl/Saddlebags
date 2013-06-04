@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.persistence.PersistenceException;
 
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Pig;
@@ -17,20 +18,38 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Saddlebags extends JavaPlugin implements Listener {
 
     private HashMap<UUID, Saddlebag> entitySaddlebagMap = new HashMap<UUID, Saddlebag>();
+    private Economy economy;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
+        setupVault();
         getServer().getPluginManager().registerEvents(this, this);
         checkDatabase();
         loadData();
+    }
+
+    public boolean hasEconomy() {
+        return economy != null;
+    }
+
+    public Economy getEconomy() {
+        return economy;
+
+    }
+    private void setupVault() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
+        }
     }
 
     private void checkDatabase() {
@@ -79,16 +98,30 @@ public class Saddlebags extends JavaPlugin implements Listener {
                     bag = entitySaddlebagMap.get(pig.getUniqueId());
                     if (!getConfig().getBoolean("owner-only") || player.getName().equals(bag.getOwner())) {
                         if (!getConfig().getBoolean("riding-only") || player.getVehicle() != null && player.getVehicle().equals(pig)) {
-                            bag.open(player);
                             event.setCancelled(true);
+                            if (hasEconomy() && !player.hasPermission("saddlebags.free")) {
+                                double cost = getConfig().getDouble("cost-to-open", 0);
+                                if (cost > 0 && !getEconomy().withdrawPlayer(player.getName(), cost).transactionSuccess()) {
+                                        player.sendMessage("Sorry, you can't afford to open your saddlebags, that costs " + getEconomy().format(cost));
+                                        return;
+                                }
+                            }
+                            bag.open(player);
                         }
                     }
                 } else if (pig.hasSaddle()) {
                     bag = new Saddlebag(this, (Entity) pig, player);
                     if (player.getVehicle().equals(pig) || !getConfig().getBoolean("riding-only")) {
                         entitySaddlebagMap.put(pig.getUniqueId(), bag);
-                        bag.open(player);
                         event.setCancelled(true);
+                        if (hasEconomy() && !player.hasPermission("saddlebags.free")) {
+                            double cost = getConfig().getDouble("cost-to-open", 0);
+                            if (cost > 0 && !getEconomy().withdrawPlayer(player.getName(), cost).transactionSuccess()) {
+                                player.sendMessage("Sorry, you can't afford to open your saddlebags, that costs " + getEconomy().format(cost));
+                                return;
+                            }
+                        }
+                        bag.open(player);
                     }
                 }
                 

@@ -17,7 +17,7 @@ public class SerializationUtil {
         }
         return returnVal;
     }
- 
+
     public static Map<String, Object> serialize(ConfigurationSerializable cs) {
         if (cs == null) return null;
         Map<String, Object> serialized = recreateMap(cs.serialize());
@@ -29,7 +29,7 @@ public class SerializationUtil {
         serialized.put(ConfigurationSerialization.SERIALIZED_TYPE_KEY, ConfigurationSerialization.getAlias(cs.getClass()));
         return serialized;
     }
- 
+
     public static Map<String, Object> recreateMap(Map<String, Object> original) {
         Map<String, Object> map = new HashMap<String, Object>();
         for (Entry<String, Object> entry : original.entrySet()) {
@@ -37,7 +37,7 @@ public class SerializationUtil {
         }
         return map;
     }
- 
+
     // Time for Deserialization
     @SuppressWarnings("unchecked")
     public static ConfigurationSerializable deserialize(Map<String, Object> map) {
@@ -52,7 +52,7 @@ public class SerializationUtil {
         }
         return ConfigurationSerialization.deserializeObject(map);
     }
- 
+
     public static List<ConfigurationSerializable> deserializeItemList(List<Map<String, Object>> itemList) {
         List<ConfigurationSerializable> returnVal = new ArrayList<ConfigurationSerializable>();
         for (Map<String, Object> map : itemList) {
@@ -60,5 +60,4 @@ public class SerializationUtil {
         }
         return returnVal;
     }
- 
 }
